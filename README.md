@@ -29,7 +29,8 @@ course/
   together, "1.2 Second lesson". Numbers are not in the URLs (`/<course>/getting-started/second-lesson/`), so
   renumbering never moves a page.
 - **A page's title** is its first `# Heading`, which the site prints as the page's own heading. A `title:` in the
-  frontmatter wins. Write the heading without a number. A `description:` in the frontmatter is the page's
+  frontmatter wins. Write the heading without a number: a title that already starts with the lesson's own number
+  ("1.2: Second lesson") is shown as it is, not numbered a second time. A `description:` in the frontmatter is the page's
   description; without one it is the first paragraph long enough to describe the page. Any other frontmatter is dropped.
 - **Links** between lessons are plain relative links to the files (`[next](02-second-lesson.md#the-idea)`,
   `[git](../02-git/01-save-points.md)`), so they work on GitHub and in an editor too, and the site rewrites them.
