@@ -1,0 +1,165 @@
+/* learnshelf's emerald, #019f68 (hue 160), on Starlight's colour variables. The mark's own colour is the dark theme's
+   accent. On white it is 3.0:1, too weak for text, so the light theme uses a deeper emerald, 5.4:1, which also takes
+   white text on the active sidebar item. */
+:root {
+    --sl-color-accent-low: #06382a;
+    --sl-color-accent: #019f68;
+    --sl-color-accent-high: #5fdca8;
+}
+
+:root[data-theme='light'] {
+    --sl-color-accent-low: #d3f0e2;
+    --sl-color-accent: #007a4d;
+    --sl-color-accent-high: #00462d;
+}
+
+/* The header's right side is the theme toggle alone, so Starlight's divider after the (empty) social links goes. The
+   phone menu has its own copy of the links, which is not in .right-group and is left as it is. */
+.right-group .social-icons {
+    display: none;
+}
+
+/* Left sidebar. The page you are on is marked by green text in a rounded green outline, not by Starlight's filled bar,
+   and any other link turns green when the pointer is on it. The accent is the deep emerald on light and the pale one
+   on dark, both clear of 4.5:1 on the sidebar. The selected link keeps the regular weight: bold is wider, and a long
+   title would wrap only when it is the current page. Every link has the outline's 1px at rest, transparent, so
+   selecting one moves nothing. */
+.sidebar-content a {
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+}
+
+.sidebar-content a:hover {
+    color: var(--sl-color-text-accent);
+}
+
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+    background-color: transparent;
+    border-color: var(--sl-color-text-accent);
+    color: var(--sl-color-text-accent);
+    font-weight: 400;
+}
+
+/* "On this page", on the right. A link turns green when the pointer is on it, and the section you are in is green and
+   underlined. */
+starlight-toc a:hover,
+mobile-starlight-toc a:hover,
+starlight-toc a[aria-current='true']:hover,
+mobile-starlight-toc a[aria-current='true']:hover {
+    color: var(--sl-color-text-accent);
+}
+
+starlight-toc a[aria-current='true'],
+mobile-starlight-toc a[aria-current='true'] {
+    color: var(--sl-color-text-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+}
+
+/* Sizes. The sidebar's lesson links are 0.9375rem (15px) and the "On this page" links 0.875rem (Starlight's are 0.875rem
+   and 0.8125rem). The line heights are plain numbers, so they follow the size; the table of contents gets a little more
+   room than Starlight's 1.25 for a heading that wraps. */
+.sidebar-content a {
+    font-size: 0.9375rem;
+    line-height: 1.4;
+}
+
+starlight-toc a,
+mobile-starlight-toc a {
+    font-size: var(--sl-text-sm);
+    line-height: 1.3;
+}
+
+/* Headings a little smaller than Starlight's. The page title is 2.4rem where Starlight has 2.625rem, and the other
+   heading sizes keep their proportion to it: every one is Starlight's size times 2.4 / 2.625. The sizes are
+   Starlight's own steps, so they change at the same screen width as Starlight's do (50em). */
+:root {
+    --ls-heading-scale: calc(2.4 / 2.625);
+    --sl-text-h1: calc(var(--sl-text-4xl) * var(--ls-heading-scale));
+    --sl-text-h2: calc(var(--sl-text-3xl) * var(--ls-heading-scale));
+    --sl-text-h3: calc(var(--sl-text-2xl) * var(--ls-heading-scale));
+    --sl-text-h4: calc(var(--sl-text-xl) * var(--ls-heading-scale));
+    --sl-text-h5: calc(var(--sl-text-lg) * var(--ls-heading-scale));
+}
+
+@media (min-width: 50em) {
+    :root {
+        --sl-text-h1: calc(var(--sl-text-5xl) * var(--ls-heading-scale));
+        --sl-text-h2: calc(var(--sl-text-4xl) * var(--ls-heading-scale));
+        --sl-text-h3: calc(var(--sl-text-3xl) * var(--ls-heading-scale));
+        --sl-text-h4: calc(var(--sl-text-2xl) * var(--ls-heading-scale));
+    }
+}
+
+/* The search field is 2rem tall, as in the Lpdf docs. */
+site-search button[data-open-modal] {
+    height: 2rem;
+}
+
+/* The search dialog keeps its field, and on a phone its Cancel button, in place while the results scroll. Starlight
+   scrolls the whole dialog, so the field went up with the results. Here the dialog does not scroll: every box from the
+   dialog's frame down to the results is a column that may shrink, and the results (.pagefind-ui__drawer) are the one
+   that scrolls. */
+.dialog-frame {
+    overflow: hidden;
+}
+
+.search-container,
+#starlight__search,
+.pagefind-ui,
+.pagefind-ui__form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.pagefind-ui__drawer {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 0.75rem; /* a result scrolls out under this gap, not against the field */
+    overflow-y: auto;
+}
+
+/* The field and its clear button keep their own height; only the results give way. */
+.pagefind-ui__search-input,
+.pagefind-ui__search-clear {
+    flex: none;
+}
+
+/* The header is 3rem tall at every width, as in the Lpdf docs, where Starlight's is 4rem on a wide screen. Starlight
+   offsets the sidebar and the page from --sl-nav-height, so they follow. With the 2rem search field the padding
+   above and below is 0.5rem. */
+:root {
+    --sl-nav-height: 3rem;
+    --sl-nav-pad-y: 0.5rem;
+}
+
+/* Surfaces: the Lpdf docs' three per theme, about 2 points of OKLCH lightness apart. The header is the extreme of
+   each theme, near black or white; the sidebar is the quieter of the two panes, a step darker than the main column.
+     dark   header #121519 · sidebar #171a1f · main #1d2024
+     light  header #ffffff · sidebar #eef1f5 · main #f5f8fb */
+:root {
+    --sl-color-bg-nav: #121519;
+    --sl-color-bg-sidebar: #171a1f;
+    --sl-color-bg: #1d2024;
+}
+
+:root[data-theme='light'] {
+    --sl-color-bg-nav: #ffffff;
+    --sl-color-bg-sidebar: #eef1f5;
+    --sl-color-bg: #f5f8fb;
+}
+
+/* Code blocks on the header's colour, as in the Lpdf docs: a block reads as a piece of the header's ground set into the
+   page, and in the light theme it is not lost against the main column. Expressive Code otherwise takes gray-6 in dark
+   and gray-7 in light. A block with no title takes --ec-codeBg, one with a title the frame variables. */
+.expressive-code {
+    --ec-codeBg: var(--sl-color-bg-nav);
+    --ec-frm-edBg: var(--sl-color-bg-nav);
+    --ec-frm-trmBg: var(--sl-color-bg-nav);
+    --ec-frm-edActTabBg: var(--sl-color-bg-nav);
+}

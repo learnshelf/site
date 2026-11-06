@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build output: one folder per course, dist/<course>/
+dist/
+.astro/
+
+# Written by scripts/sync-content.mjs from a course on every dev, build and preview run
+src/content/docs/
+src/generated/
+public/course-files/
+
+# Editor
+.vscode

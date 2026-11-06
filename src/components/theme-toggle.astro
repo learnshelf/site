@@ -1,0 +1,53 @@
+---
+// Replaces Starlight's three-way theme picker with one button that flips between dark and light. Starlight renders it
+// in the header and again in the phone menu.
+---
+
+<learnshelf-theme-toggle>
+    <button type="button" aria-label="Toggle light and dark theme" title="Toggle light and dark theme">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true">
+            <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,16.37a86.4,86.4,0,0,1,16,3V212.67a86.4,86.4,0,0,1-16,3Zm32,9.26a87.81,87.81,0,0,1,16,10.54V195.83a87.81,87.81,0,0,1-16,10.54ZM40,128a88.11,88.11,0,0,1,80-87.63V215.63A88.11,88.11,0,0,1,40,128Zm160,50.54V77.46a87.82,87.82,0,0,1,0,101.08Z"></path>
+        </svg>
+    </button>
+</learnshelf-theme-toggle>
+
+<script>
+    import { THEME_STORAGE_KEY } from '../theme';
+
+    class LearnshelfThemeToggle extends HTMLElement
+    {
+        connectedCallback(): void
+        {
+            this.querySelector('button')?.addEventListener('click', () =>
+            {
+                const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.dataset.theme = next;
+                try { localStorage.setItem(THEME_STORAGE_KEY, next); }
+                catch { /* storage blocked: the choice lasts for this page */ }
+            });
+        }
+    }
+
+    customElements.define('learnshelf-theme-toggle', LearnshelfThemeToggle);
+</script>
+
+<style>
+    learnshelf-theme-toggle {
+        display: flex;
+    }
+    button {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 7px;
+        background: none;
+        color: var(--sl-color-gray-2);
+        cursor: pointer;
+        transition: color 0.15s;
+    }
+    button:hover {
+        color: var(--sl-color-text-accent);
+    }
+</style>

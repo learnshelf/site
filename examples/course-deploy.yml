@@ -1,0 +1,23 @@
+# Put this in a course repo as .github/workflows/deploy.yml. It builds the course/ folder with the learnshelf site
+# template and publishes it at https://learnshelf.github.io/<repo name>/.
+#
+# Once per repo: Settings > Pages > Source: GitHub Actions.
+name: Deploy site
+
+on:
+  push:
+    branches: [main] # the course repo's default branch
+  workflow_dispatch:
+
+# The called workflow can use only what its caller grants.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  site:
+    uses: learnshelf/site/.github/workflows/deploy.yml@main
+    # To stay on one version of the template, give both a tag, for example @v1 above and:
+    # with:
+    #   site-ref: v1

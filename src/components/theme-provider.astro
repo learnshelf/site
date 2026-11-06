@@ -1,0 +1,16 @@
+---
+// Replaces Starlight's theme provider: the reader's stored choice, or else the system's. Inline, so the theme is set
+// before the page paints.
+import { THEME_STORAGE_KEY } from '../theme';
+---
+
+<script define:vars={{ storageKey: THEME_STORAGE_KEY }}>
+    let theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    try
+    {
+        const stored = localStorage.getItem(storageKey);
+        if (stored === 'light' || stored === 'dark') theme = stored;
+    }
+    catch { /* storage blocked: the system's choice stands */ }
+    document.documentElement.dataset.theme = theme;
+</script>

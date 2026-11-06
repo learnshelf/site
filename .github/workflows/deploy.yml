@@ -1,0 +1,60 @@
+# Builds a course's site with this template and deploys it to the course repo's GitHub Pages, at
+# https://learnshelf.github.io/<repo name>/. A course repo calls this workflow; see examples/course-deploy.yml.
+name: Deploy course site
+
+on:
+  workflow_call:
+    inputs:
+      site-ref:
+        description: The branch or tag of learnshelf/site to build with. Pin a tag to keep a course on one version of the template.
+        type: string
+        default: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the course
+        uses: actions/checkout@v4
+        with:
+          path: course-repo
+
+      - name: Check out the site template
+        uses: actions/checkout@v4
+        with:
+          repository: learnshelf/site
+          ref: ${{ inputs.site-ref }}
+          path: site
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install the template's dependencies
+        run: npm ci
+        working-directory: site
+
+      - name: Build the site
+        run: node scripts/build.mjs ../course-repo --slug "$REPO_NAME"
+        working-directory: site
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist/${{ github.event.repository.name }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
