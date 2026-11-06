@@ -168,12 +168,16 @@ export function readCourse(courseDir) {
     chapters.sort((a, b) => a.number - b.number);
     if (reference) pages.push(...reference);
 
+    // "1.2 Title": the chapter's number and the lesson's. A title that already starts with that number ("1.2: Title",
+    // as a course written before the layout may have it) is left as it is, so the number is not said twice.
+    const numbered = (prefix, title) => (new RegExp(`^${prefix.replace('.', '\\.')}(?![\\d.])`).test(title) ? title : `${prefix} ${title}`);
+
     const sidebar = chapters.map(chapter => ({
         label: chapter.overview.title,
         collapsed: true,
         items: [
             { label: 'Overview', slug: chapter.overview.slug },
-            ...chapter.lessons.map(l => ({ label: `${chapter.number}.${l.number} ${l.page.title}`, slug: l.page.slug })),
+            ...chapter.lessons.map(l => ({ label: numbered(`${chapter.number}.${l.number}`, l.page.title), slug: l.page.slug })),
             ...(chapter.practice.length
                 ? [{ label: 'Practice', collapsed: true, items: chapter.practice.map(page => ({ label: page.title, slug: page.slug })) }]
                 : []),
